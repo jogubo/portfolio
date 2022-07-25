@@ -13,18 +13,34 @@ from werkzeug.security import generate_password_hash
 
 from portfolio.db import get_db
 
-bp = Blueprint('auth', __name__, url_prefix='/auth')
+bp = Blueprint('admin', __name__, url_prefix='/admin')
 
 
 def login_required(view):
     @functools.wraps(view)
     def wrapped_view(**kwargs):
         if g.user is None:
-            return redirect(url_for('auth.login'))
+            db = get_db()
+            user = db.execute(
+                'SELECT * FROM user WHERE id = ?', (1,)
+            ).fetchone()
+            if user:
+                return redirect(url_for('admin.login'))
+            elif user is None:
+                return redirect(url_for('admin.create'))
 
         return view(**kwargs)
 
     return wrapped_view
+
+
+def admin_exist():
+    db = get_db()
+    user = db.execute(
+        'SELECT * FROM user WHERE id = ?', (1,)
+    ).fetchone()
+
+    return True if user is not None else False
 
 
 @bp.before_app_request
@@ -39,9 +55,17 @@ def load_logged_in_user():
         ).fetchone()
 
 
-@bp.route('/register', methods=('GET', 'POST'))
-def register():
-    if request.method == 'POST':
+@bp.route('/', methods=('GET', 'POST'))
+@login_required
+def admin():
+    return 'Bonjour'
+
+
+@bp.route('/create', methods=('GET', 'POST'))
+def create():
+    permission = False if admin_exist() else True
+
+    if permission and request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         db = get_db()
@@ -62,11 +86,14 @@ def register():
             except db.IntegrityError:
                 error = f'User {username} is already registered.'
             else:
-                return redirect(url_for('auth.login'))
+                return redirect(url_for('admin.login'))
 
         flash(error)
 
-    return render_template('auth/register.html')
+    if permission:
+        return render_template('admin/register.html')
+    else:
+        return redirect(url_for('admin.admin'))
 
 
 @bp.route('/login', methods=('GET', 'POST'))
@@ -88,11 +115,11 @@ def login():
         if error is None:
             session.clear()
             session['user_id'] = user['id']
-            return redirect(url_for('index'))
+            return redirect(url_for('admin.admin'))
 
         flash(error)
 
-    return render_template('auth/login.html')
+    return render_template('admin/login.html')
 
 
 @bp.route('/logout')
