@@ -1,0 +1,21 @@
+image: python:latest
+
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip
+    - venv/
+
+before_script:
+  - python --version
+  - python -m .venv
+  - source .venv/bin/activate
+
+test:
+  script:
+    - python setup.py test
+    - pip install pytest flake8
+    - flake8
