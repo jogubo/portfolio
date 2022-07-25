@@ -6,4 +6,4 @@ bp = Blueprint('category', __name__, url_prefix='/category')
 
 @bp.route('/<name>')
 def category(name):
-    pass
+    return render_template('main/index.html')
