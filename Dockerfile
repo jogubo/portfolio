@@ -4,15 +4,15 @@ ENV PYTHONDONTWRITEBYTECODE 1
 
 ENV PYTHONUNBUFFERED 1
 
-ENV FLASK_APP app.py
+ENV FLASK_APP portfolio
 
 WORKDIR /usr/src/app
 
-COPY requirements.txt .
+COPY . .
 
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-COPY src .
+CMD flask init-db
 
 ENTRYPOINT ["flask"] 
 
