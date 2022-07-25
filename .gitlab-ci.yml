@@ -18,4 +18,4 @@ test:
   script:
     - python setup.py test
     - pip install pytest flake8
-    - flake8
+    - flake8 portfolio
