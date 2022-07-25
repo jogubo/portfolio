@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
         <title>{% block title %}{% endblock %} - Portfolio</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
     </head>
     <body>
         <nav>
@@ -13,15 +13,6 @@
         <section class="content">
             <header>
                 {% block header %}{% endblock%} 
-                <nav>
-                    <ul>
-                    {% for category in load_categories() %}
-                        {% if not category.hide %}
-                        <li>{{ category.name }}</li>
-                        {% endif %}
-                    {% endfor %}
-                    </ul>
-                </nav>
             </header>
             {% for message  in get_flashed_messages() %}
             <div class="flash">{{ message }}</div>
