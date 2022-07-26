@@ -1,17 +1,8 @@
-{% extends 'admin/base.html' %}
+{% extends 'admin/layout.html' %}
 
 {% block header %}
     <h2>{% block title %}Admin{% endblock %}</h2>
 {% endblock %}
 
 {% block content %}
-    <p>Welcome {{ g.user.username }},</p>
-
-    <form method="post">
-        <label for="name">Category name</label>
-        <input name="name" id="name" required>
-        <label for="hide">Hide category in menu</label>
-        <input type="checkbox">
-        <input type="submit" value="Add">
-    </form>
 {% endblock %}

@@ -6,11 +6,13 @@ ENV PYTHONUNBUFFERED 1
 
 ENV FLASK_APP portfolio
 
+ENV FLASK_ENV development
+
 WORKDIR /usr/src/app
 
 COPY . .
 
-RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN pip install -e .
 
 CMD flask init-db
 

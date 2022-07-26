@@ -10,13 +10,17 @@ cache:
     - venv/
 
 before_script:
+  - export FLASK_APP=portfolio
+  - export FLASK_ENV=development
   - python --version
   - python -m venv .venv
   - source .venv/bin/activate
+  - python -m pip install --upgrade pip
 
 test:
   script:
-    - pip install pytest flake8 pytest
+    - pip install flake8 pytest
     - pip install -e .
+    - flask init-db
     - flake8 portfolio
     - pytest

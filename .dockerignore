@@ -1,3 +1,6 @@
 README.md
 Dockerfile
 instance/
+tests/
+*.egg-info/
+__pycache__/
