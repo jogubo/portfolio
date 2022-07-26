@@ -1,0 +1,21 @@
+{% extends 'admin/layout.html' %}
+
+{% block header %}
+    <h2>{% block title %}Manage Categories{% endblock %}</h2>
+{% endblock %}
+
+{% block content %}
+    {% for category in get_categories() %}
+    <div>{{ category.name }}</div>
+    {% endfor %}
+
+    <div>
+        <form method="post">
+            <label for="name">Category name</label>
+            <input name="name" id="name" required>
+            <label for="hidden">Hide in menu</label>
+            <input type="checkbox" name="hidden">
+            <input type="submit" value="Add">
+        </form>
+    </div>
+{% endblock %}

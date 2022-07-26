@@ -9,22 +9,20 @@
     <body>
         <nav>
             <h1>Portfolio</h1>
+            <ul>
+                <li><a href="{{ url_for('admin.manage_categories') }}">Manage categories</a></li>
+                <li><a href="#">Photographies</a></li>
+                <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+            </ul>
         </nav>
         <section class="content">
             <header>
-                {% block header %}{% endblock%} 
-                <nav>
-                    <ul>
-                    {% for category in load_categories() %}
-                        {% if not category.hide %}
-                        <li>{{ category.name }}</li>
-                        {% endif %}
-                    {% endfor %}
-                    </ul>
-                </nav>
+                <p>Welcome {{ g.user.username }}</p>
             </header>
             {% for message  in get_flashed_messages() %}
-            <div class="flash">{{ message }}</div>
+            <div class="flash">
+                {{ message }}
+            </div>
             {% endfor %}
             {% block content %}{% endblock %}
         </section>

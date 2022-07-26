@@ -1,5 +1,3 @@
-import os
-
 from flask import Flask
 
 
@@ -7,7 +5,6 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'portfolio.sqlite'),
     )
 
     if test_config is None:
@@ -15,24 +12,17 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(test_config)
 
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
-
-    from . import db
-    db.init_app(app)
+    from portfolio import database
+    database.init_app(app)
 
     # Blueprints
-    from . import main
-    app.register_blueprint(main.bp)
-    app.add_url_rule('/', endpoint='index')
-    app.jinja_env.globals.update(load_categories=main.load_categories)
-
-    from . import admin
+    from portfolio.views import general
+    from portfolio.views import auth
+    from portfolio.views import admin
+    app.register_blueprint(general.bp)
+    app.register_blueprint(auth.bp)
     app.register_blueprint(admin.bp)
 
-    from . import category
-    app.register_blueprint(category.bp)
+    app.jinja_env.globals.update(get_categories=general.get_categories)
 
     return app
