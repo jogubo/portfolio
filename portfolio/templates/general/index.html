@@ -3,3 +3,10 @@
 {% block header %}
     <h2>{% block title %}Home{% endblock %}</h2>
 {% endblock %}
+
+{% block content %}
+    {% for picture in pictures %}
+    <img src="{{ picture.url }}" alt="">
+    <legend>{{ picture.description }}</legend>
+    {% endfor %}
+{% endblock %}

@@ -11,7 +11,7 @@
             <h1>Portfolio</h1>
             <ul>
                 <li><a href="{{ url_for('admin.manage_categories') }}">Manage categories</a></li>
-                <li><a href="#">Photographies</a></li>
+                <li><a href="{{ url_for('admin.upload_picture') }}">Manages pictures</a></li>
                 <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
             </ul>
         </nav>
