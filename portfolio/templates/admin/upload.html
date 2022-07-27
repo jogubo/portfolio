@@ -1,0 +1,29 @@
+{% extends 'admin/layout.html' %}
+
+{% block header %}
+    <h2>{% block title %}Manage Categories{% endblock %}</h2>
+{% endblock %}
+
+{% block content %}
+    {% for category in get_categories() %}
+    <div>{{ category.name }}</div>
+    {% endfor %}
+
+    <div>
+        <form method="post" enctype="multipart/form-data">
+            <label for="name">Picture name</label>
+            <input name="name" id="name" required>
+            <label for="description">Description</label>
+            <input name="description" id="description">
+            <label for="category">Category</label>
+            <select name="category" id="category">
+                {% for category in get_categories() %}
+                <option value="{{ category.id }}">{{ category.name }} | {{ category.id }}</option>
+                {% endfor %}
+            </select>
+            <label for="file">Picture</label>
+            <input type="file" name="file" value="file">
+            <input type="submit" value="Add">
+        </form>
+    </div>
+{% endblock %}

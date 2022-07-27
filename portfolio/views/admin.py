@@ -1,3 +1,5 @@
+import os
+
 from flask import Blueprint
 from flask import flash
 from flask import g
@@ -6,10 +8,13 @@ from flask import render_template
 from flask import request
 from flask import session
 from flask import url_for
+from flask import current_app
+from werkzeug.utils import secure_filename
 
 from portfolio.database import db_session
 from portfolio.models import User
 from portfolio.models import Category
+from portfolio.models import Picture
 from portfolio.views.auth import login_required
 
 bp = Blueprint('admin', __name__, url_prefix='/admin')
@@ -53,3 +58,33 @@ def manage_categories():
 
     else:
         return render_template('admin/categories.html')
+
+
+@bp.route('/upload', methods=('GET', 'POST'))
+@login_required
+def upload_picture():
+
+    if request.method == 'POST':
+        name = request.form['name']
+        description = request.form['description']
+        category = request.form['category']
+        file = request.files['file']
+        error = None
+
+        if not name:
+            error = 'Category name is required.'
+
+        if error is None:
+            filename = secure_filename(file.filename).lower()
+            file.save(
+                os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+            )
+            picture = Picture(name, description, category, filename)
+            db_session.add(picture)
+            db_session.commit()
+            return redirect(url_for('admin.index'))
+
+        flash(error)
+
+    else:
+        return render_template('admin/upload.html')
