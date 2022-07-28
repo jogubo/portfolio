@@ -19,7 +19,7 @@ bp = Blueprint('auth', __name__, url_prefix='/admin/auth')
 
 
 def admin_exists():
-    return True if User.query.get(1) is not None else False
+    return True if User.query.first() is not None else False
 
 
 def login_required(view):
@@ -43,7 +43,7 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = User.query.get(1)
+        g.user = User.query.get(user_id)
 
 
 @bp.route('/create', methods=('GET', 'POST'))

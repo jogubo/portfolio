@@ -6,7 +6,7 @@
 
 {% block content %}
     {% for picture in pictures %}
-    <img src="{{ picture.url }}" alt="">
-    <legend>{{ picture.description }}</legend>
+    <img src="/{{ picture.url }}" alt="">
+    <legend>{{ picture.title }}</legend>
     {% endfor %}
 {% endblock %}
