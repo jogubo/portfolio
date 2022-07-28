@@ -32,6 +32,7 @@ def create_app(test_config=None):
     app.register_blueprint(auth.bp)
     app.register_blueprint(admin.bp)
 
+    # Get categories in templates
     app.jinja_env.globals.update(get_categories=general.get_categories)
 
     return app

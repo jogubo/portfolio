@@ -9,6 +9,7 @@ from flask import request
 from flask import session
 from flask import url_for
 from flask import current_app
+from werkzeug.urls import url_fix
 from werkzeug.utils import secure_filename
 
 from portfolio.database import db_session
@@ -42,6 +43,7 @@ def manage_categories():
 
     if request.method == 'POST':
         name = request.form['name']
+        name_url = url_fix(name).replace('%20', '-').lower()
         hidden = True if 'hidden' in request.form else False
         error = None
 
@@ -49,7 +51,7 @@ def manage_categories():
             error = 'Category name is required.'
 
         if error is None:
-            category = Category(name, hidden)
+            category = Category(name, name_url, hidden)
             db_session.add(category)
             db_session.commit()
             return redirect(url_for('admin.index'))
@@ -65,21 +67,21 @@ def manage_categories():
 def upload_picture():
 
     if request.method == 'POST':
-        name = request.form['name']
+        title = request.form['title']
         description = request.form['description']
         category = request.form['category']
         file = request.files['file']
         error = None
 
-        if not name:
-            error = 'Category name is required.'
+        if not title:
+            error = 'Title is required.'
 
         if error is None:
             filename = secure_filename(file.filename).lower()
             file.save(
                 os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
             )
-            picture = Picture(name, description, category, filename)
+            picture = Picture(title, description, category, filename)
             db_session.add(picture)
             db_session.commit()
             return redirect(url_for('admin.index'))

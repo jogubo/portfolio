@@ -1,6 +1,19 @@
+html { 
+  background: #f7eee5; 
+}
+
+h1, h2 {
+  color: #2e2d29;
+}
+
+a, a:link, a:visited {
+    color: #2e2d29;
+}
+
 img {
-  border: 20px solid #ddd;
   border-radius: 4px;
-  padding: 5px;
-  width: 800px;
+  background: #f7f4ef;
+  padding: 40px;
+  width: 1200px;
+  box-shadow: 0 0 10px rgba(42, 41,37, 0.3);
 }
