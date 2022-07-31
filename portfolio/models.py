@@ -4,6 +4,7 @@ from sqlalchemy import String
 from sqlalchemy import Boolean
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
+from werkzeug.urls import url_fix
 
 from portfolio.database import Base
 
@@ -37,6 +38,9 @@ class Category(Base):
 
     def __repr__(self):
         return f'{self.name}'
+
+    def set_name_url(self):
+        self.name_url = url_fix(self.name).replace('%20', '-').lower()
 
 
 class Picture(Base):
